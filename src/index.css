@@ -200,6 +200,20 @@ height: auto; */
   justify-content: space-between;
 }
 
+
+.delete {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ec645b;
+  background: white;
+  border-radius: 30px;
+  font-size: 10px;
+  color: #ec645b;
+  min-width: 50px;
+  min-height: 50px;
+  justify-content: space-between;
+}
+
 button {
   background: transparent;
   border: none;

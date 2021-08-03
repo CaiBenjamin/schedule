@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
+
 // import {getCurrentDate} from './utils'
 // console.log(getCurrentDate())
 
@@ -75,6 +76,18 @@ const App = () => {
 	};
 
 	const toggleComplete = (index) => {
+
+	
+		const newItems = [...items];
+
+		newItems[index].isSelected = !newItems[index].isSelected;
+
+		setItems(newItems);
+	};
+
+	const toggleComplete2 = (index) => {
+
+	
 		const newItems = [...items2];
 
 		newItems[index].isSelected = !newItems[index].isSelected;
@@ -128,6 +141,24 @@ const App = () => {
 
 	};
 
+
+	const handleTrash2 = (index) => {
+		const newItems = [...items2];
+		newItems[index].quantity = newItems[index].quantity;
+
+		setItems2(newItems);
+	
+		if (index == 0) {
+			setItems2(newItems.slice(1, newItems.length));
+		} else {
+			const tempArrayFirst = newItems.slice(0, index)
+			const tempArraySecond = newItems.slice(index + 1, newItems.length);
+			setItems2(tempArrayFirst.concat(tempArraySecond));
+		}
+		console.log(newItems);
+
+	};
+
 	// const http = require('http');
 	// const express = require('express');
 	// const MessagingResponse = require('twilio').twiml.MessagingResponse;
@@ -146,16 +177,27 @@ const App = () => {
 	// console.log('Express server listening on port 1337');
 	// });
 
+	const mystyle = {
+		color: "white",
+		padding: "10px",
+		fontFamily: "Arial"
+	  };
+
 
 	return (
 			<div className='main-container'>
 
-					<div className='add-item-box'>
-						<div> Hello Benjamin. The date is {time} </div>
+					<div> 
+						
+						<h1 style={mystyle}> Hello Benjamin. The date is {time} </h1>
+ 
+					
 					</div>
 
-					<Row>
-						<Col>
+
+					<div class="row">
+						<div class="col">
+
 							<div> Shopping List </div>
 							<div className='add-item-box'>
 								<input value={inputValue} onChange={(event) => setInputValue(event.target.value)} className='add-item-input' placeholder={display} />
@@ -190,9 +232,9 @@ const App = () => {
 									</div>
 								))}
 							</div>
-							{/* <div className='total'>Total: {totalItemCount}</div> */}
-						</Col>
-						<Col>
+						</div>
+
+						<div class="col">
 							<div> TODO List </div>
 							<div className='add-item-box2'>
 								<input value={inputValue2} onChange={(event2) => setInputValue2(event2.target.value)} className='add-item-input' placeholder={display2} />
@@ -201,7 +243,7 @@ const App = () => {
 							<div className='item-list2'>
 								{items2.map((item, index) => (
 									<div className='item-container'>
-										<div className='item-name' onClick={() => toggleComplete(index)}>
+										<div className='item-name' onClick={() => toggleComplete2(index)}>
 											{item.isSelected ? (
 												<>
 													<span className='completed'>{item.itemName}</span>
@@ -213,23 +255,32 @@ const App = () => {
 												)}
 										</div>
 
+										<div className='delete'>
+											<button>
+												<FontAwesomeIcon icon={faTrash} onClick={() => handleTrash2(index)} size= '4x' />
+											</button>
+										</div>
+
+										
+
 									</div>
 								))}
 							</div>
 
-						</Col>
-						<Col>
+						</div>
+
+						<div class="col">
+
 						<div> Notes </div>
 							<div>
 							<textarea className='textbox'>
-								{/* <input value={inputValue3} className='add-item-input' placeholder={display3} /> */}
 
 							</textarea>
 							</div>
-						</Col>
-					
-					</Row>
+						</div>
 
+           			</div>
+					
 			</div>
 		
 	);
