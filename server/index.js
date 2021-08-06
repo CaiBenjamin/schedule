@@ -6,6 +6,7 @@ const client = require('twilio')(
   process.env.TWILIO_AUTH_TOKEN
 );
 
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -16,11 +17,6 @@ app.get('/api/greeting', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
-
-
-app.listen(process.env.PORT || 3001, () =>
-  console.log('Express server is running on localhost:3001')
-);
 
 app.post('/api/messages', (req, res) => {
   res.header('Content-Type', 'application/json');
@@ -37,6 +33,9 @@ app.post('/api/messages', (req, res) => {
       console.log(err);
       res.send(JSON.stringify({ success: false }));
     });
-
-
 });
+
+
+app.listen(process.env.PORT || 3001, () =>
+  console.log('Express server is running on localhost:3001')
+);

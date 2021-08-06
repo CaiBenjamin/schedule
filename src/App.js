@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component} from 'react';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft, faCircle, faCheckCircle, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-
-
-// import {getCurrentDate} from './utils'
-// console.log(getCurrentDate())
+import { faChevronRight, faChevronLeft, faCircle, faCheckCircle, faPlus, faTrash, faSms } from '@fortawesome/free-solid-svg-icons';
 
 const App = () => {
 	// HINT: each "item" in our list names a name, a boolean to tell if its been completed, and a quantity
 	const time = new Date().toDateString();
 	console.log(time);
+
 	//change string to better
 
 	const [items, setItems] = useState([
 		{ itemName: 'item 1 dsfasdkfjl', quantity: 1, isSelected: false },
 		{ itemName: 'item 2', quantity: 3, isSelected: true },
 		{ itemName: 'item 3', quantity: 2, isSelected: false },
-	]);
+  ]);
+  
 	const [inputValue, setInputValue] = useState('');
 	const [totalItemCount, setTotalItemCount] = useState(6);
 	const display = "Add to Shopping List";
@@ -41,9 +35,12 @@ const App = () => {
 
 	const [inputValue3, setInputValue3] = useState('');
 	const [totalItemCount3, setTotalItemCount3] = useState(6);
-	const display3 = "Type Notes here"
+  const display3 = "Type Notes here"
 
+	const [shoppingList, setShoppingList] = useState('');
 
+	console.log(shopList.state.message + "sasdk;lfjasdfjaskl;fj;alksdfj;sadk")
+  
 	const handleAddButtonClick = (num) => {
 		//asdfsadfasdfsadf
 		// max 16 characters
@@ -71,8 +68,9 @@ const App = () => {
 		} else {
 			const newItems = [...items2, newItem];
 			setItems2(newItems);
-		}
-		setInputValue('');
+    }
+    setInputValue('');
+    loop();
 	};
 
 	const toggleComplete = (index) => {
@@ -141,7 +139,6 @@ const App = () => {
 
 	};
 
-
 	const handleTrash2 = (index) => {
 		const newItems = [...items2];
 		newItems[index].quantity = newItems[index].quantity;
@@ -157,51 +154,57 @@ const App = () => {
 		}
 		console.log(newItems);
 
-	};
+  };
+  
+  const loop = () =>{
+    let toPrint = '';
+    let n = 0;
+    console.log(toPrint + " :toPrintStart");
+    while(n < items.length){
+      toPrint += items[n].itemName + ""
+      // console.log(toPrint + " :toPrint");
+      // console.log(items[n].itemName + " :item[n].itemName ");
+      // console.log(items.length + " :items length");
+      // console.log("\n");
+      n++;
+    }
 
-	// const http = require('http');
-	// const express = require('express');
-	// const MessagingResponse = require('twilio').twiml.MessagingResponse;
+    console.log(toPrint + " :toPrintEND");
+    setShoppingList(toPrint)
+		console.log(shoppingList + ":shoppingList");
+		console.log("\n");
+		shoppingList2 = shoppingList;
+		console.log(shoppingList2 + ":shoppingList2 bleh");
 
-	// const app = express();
-	// app.post('/sms', (req, res) => {
-	// const twiml = new MessagingResponse();
-
-	// twiml.message('The Robots are coming! Head for the hills!');
-
-	// res.writeHead(200, {'Content-Type': 'text/xml'});
-	// res.end(twiml.toString());
-	// });
-
-	// http.createServer(app).listen(1337, () => {
-	// console.log('Express server listening on port 1337');
-	// });
+  }
 
 	const mystyle = {
 		color: "white",
 		padding: "10px",
 		fontFamily: "Arial"
-	  };
-
-
+    };
+    
 	return (
 			<div className='main-container'>
 
 					<div> 
-						
 						<h1 style={mystyle}> Hello Benjamin. The date is {time} </h1>
- 
-					
 					</div>
-
 
 					<div class="row">
 						<div class="col">
 
 							<div> Shopping List </div>
 							<div className='add-item-box'>
+
 								<input value={inputValue} onChange={(event) => setInputValue(event.target.value)} className='add-item-input' placeholder={display} />
+								<button>
 								<FontAwesomeIcon icon={faPlus} onClick={() => handleAddButtonClick(1)} />
+								</button>
+
+								<SMSForm />
+
+			
 							</div>
 							<div className='item-list'>
 								{items.map((item, index) => (
@@ -286,5 +289,99 @@ const App = () => {
 	);
 };
 
+// class shoppingList2 extends Component{
+// 	constructor(props) {
+// 		super(props);
+//     this.state = {
+//       message: shoppingList
+//     };
+
+//   }
+// }
+
+class SMSForm extends Component {
+  constructor(props) {
+		super(props);
+		console.log("THIS GOT CALLED2");
+		console.log(shoppingList2);
+    this.state = {
+      message: {
+        to: '3016488214',
+        body: shoppingList2,
+      },
+      submitting: false,
+      error: false
+    };
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onHandleChange = this.onHandleChange.bind(this);
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    this.setState({ submitting: true });
+    fetch('/api/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.message)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+					console.log("THIS GOT CALLED");
+
+					console.log(shopList.state.message + "PPSSSLDFJSS BEEE HEREREE")
+          this.setState({
+            error: false,
+            submitting: false,
+            message: {
+              to: '3016488214',
+              body: '',
+            }
+          });
+        } else {
+          this.setState({
+            error: true,
+            submitting: false
+          });
+        }
+      });
+  }
+
+  onHandleChange(event) {
+    const name = event.target.getAttribute('name');
+    this.setState({
+      message: { ...this.state.message, [name]: event.target.value }
+    });
+  }
+
+  render() {
+    return (
+      <form
+        onSubmit={this.onSubmit}
+        className={this.state.error ? 'error sms-form' : 'sms-form'}
+      >
+
+
+      <button>
+      <FontAwesomeIcon icon={faSms} disabled={this.state.submitting} />
+      </button>
+       
+       </form>
+    );
+  }
+}
+
+
+
 
 export default App;
+
+
+
+
+
+
+
+
