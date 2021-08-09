@@ -54,10 +54,10 @@ body {
   color: #ec645b;
   margin-top: 1em;
   margin-bottom: 1em;
+  font-size: 29px;
   line-height: normal;
   display: flex;
   align-items: center;
-  font-size: 29px;
   border-radius: 10px;
   padding: 5px;
   height: auto;
@@ -209,7 +209,7 @@ height: auto; */
   border-radius: 30px;
   font-size: 10px;
   color: #ec645b;
-  min-width: 50px;
+  min-width: 30px;
   min-height: 50px;
   justify-content: space-between;
 }
